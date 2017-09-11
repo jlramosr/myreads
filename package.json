@@ -1,6 +1,6 @@
 {
   "name": "myreads",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "MyReads Project of React Nanodegree Course by Udacity",
   "private": true,
   "author": "Jose Ramos <jlramosr@gmail.com>",
@@ -11,7 +11,8 @@
   "dependencies": {
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"
