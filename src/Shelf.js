@@ -25,7 +25,9 @@ class Shelf extends Component {
 
     return (
       <div className="bookshelf">
-        <h2 className="bookshelf-title">{this.nameToTitle(name)}</h2>
+        <h2 className="bookshelf-title">
+          <div className="bookshelf-icon"></div>
+          {this.nameToTitle(name)}</h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
             {ordererBooks.map(book => (

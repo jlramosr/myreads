@@ -3,11 +3,13 @@ import { Route, Link } from 'react-router-dom'
 import Shelf from './Shelf';
 import * as BooksAPI from './BooksAPI'
 import './App.css'
+import { ClipLoader } from 'react-spinners'
 
 class BooksApp extends Component {
   state = {
     books: {}, // {bookId1: book1, bookId2: book2, ...}
-    shelves: ['currentlyReading', 'wantToRead', 'read']
+    shelves: ['currentlyReading', 'wantToRead', 'read'],
+    loading: true
   }
 
   moveBook = this.moveBook.bind(this);
@@ -19,11 +21,14 @@ class BooksApp extends Component {
   }
 
   moveBook(book, newShelf) {
+    let loading = true;
+    this.setState({loading});
     const bookId = book.id;
     BooksAPI.update(book, newShelf).then(shelvesBooks => {
       let { books } = this.state;
       books[bookId].shelf = newShelf;
-      this.setState({books});
+      loading = false;
+      this.setState({books, loading});
     })
   }
 
@@ -33,12 +38,12 @@ class BooksApp extends Component {
       for (const book of allBooks) {
         books[book.id] = book;
       }
-      this.setState({books});
+      this.setState({books, loading:false});
     })
   }
 
   render() {
-    const { books, shelves } = this.state;
+    const { books, shelves, loading } = this.state;
 
     return (
       <div className="app">
@@ -46,9 +51,17 @@ class BooksApp extends Component {
         <Route path="/" exact render={ _ => (
           
           <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
+
+            <div className="list-books-header">
+              <div className="list-books-loading">
+                <ClipLoader size="50" color={'#fff'} loading={loading}/>
+              </div>
+              <div className="list-books-title">
+                <div className="list-books-logo"></div>
+                <h1>MyReads</h1>
+              </div>
             </div>
+
             <div className="list-books-content">
               {shelves.map(shelf =>
                 <Shelf
@@ -59,9 +72,11 @@ class BooksApp extends Component {
                   onMoveBook={this.moveBook}/>
               )}
             </div>
+
             <div className="open-search">
               <Link to="/search">Add a book</Link>
             </div>
+
           </div>
         )}/>
 

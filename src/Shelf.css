@@ -8,9 +8,21 @@
   }
 }
 
+.bookshelf-icon {
+  width: 40px;
+  height: 40px;
+  color: #00695C;
+  background-image: url('./icons/books.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  float: left;
+}
+
 .bookshelf-title {
   border-bottom: 1px solid #dedede;
 }
+
 .bookshelf-books {
   text-align: center;
 }
@@ -26,6 +38,7 @@
   justify-content: center;
   flex-wrap: wrap;
 }
+
 .books-grid li {
   padding: 10px 15px;
   text-align: left;
