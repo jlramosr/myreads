@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from "prop-types"
+import './Book.css'
 
 class Book extends Component {
 
   static propTypes = {
     book: PropTypes.object.isRequired,
     shelvesToMove: PropTypes.array.isRequired,
-    nameToTitle: PropTypes.func.isRequired
+    nameToTitle: PropTypes.func.isRequired,
+    onMoveBook: PropTypes.func.isRequired
   }
 
   render() {
-    const {book, shelvesToMove, nameToTitle} = this.props;
+    const { book, shelvesToMove, nameToTitle, onMoveBook } = this.props;
+
     return (
       <div className="book">
         <div className="book-top">
@@ -22,7 +25,7 @@ class Book extends Component {
           }></div>
           <div className="book-shelf-changer">
             <select value="moveTo" onChange={event => 
-              console.log('Move Book')
+              onMoveBook(book, event.target.value)
             }>
               <option value="moveTo" disabled>
                 Move to...

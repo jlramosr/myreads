@@ -6,25 +6,39 @@ import './App.css'
 
 class BooksApp extends Component {
   state = {
-    books: []
+    books: {}, // {bookId1: book1, bookId2: book2, ...}
+    shelves: ['currentlyReading', 'wantToRead', 'read']
   }
 
+  moveBook = this.moveBook.bind(this);
+
   _getShelfBooks(books, shelf) {
-    return books.filter(book => (
+    return Object.values(books).filter(book => (
       book.shelf === shelf
     ))
   }
 
+  moveBook(book, newShelf) {
+    const bookId = book.id;
+    BooksAPI.update(book, newShelf).then(shelvesBooks => {
+      let { books } = this.state;
+      books[bookId].shelf = newShelf;
+      this.setState({books});
+    })
+  }
+
   componentDidMount() {
-    BooksAPI.getAll().then(books => {
+    BooksAPI.getAll().then(allBooks => {
+      let { books } = this.state;
+      for (const book of allBooks) {
+        books[book.id] = book;
+      }
       this.setState({books});
     })
   }
 
   render() {
-    const { books } = this.state;
-    
-    const shelves = ['currentlyReading', 'wantToRead', 'read'];
+    const { books, shelves } = this.state;
 
     return (
       <div className="app">
@@ -35,19 +49,15 @@ class BooksApp extends Component {
             <div className="list-books-title">
               <h1>MyReads</h1>
             </div>
-            <div className="list-books-content">          
-              <Shelf
-                name='currentlyReading'
-                books={this._getShelfBooks(books, 'currentlyReading')}
-                shelves={shelves}/>
-              <Shelf
-                name='wantToRead'
-                books={this._getShelfBooks(books, 'wantToRead')}
-                shelves={shelves}/>
-              <Shelf
-                name='read'
-                books={this._getShelfBooks(books, 'read')}
-                shelves={shelves}/>
+            <div className="list-books-content">
+              {shelves.map(shelf =>
+                <Shelf
+                  key={shelf}
+                  name={shelf}
+                  books={this._getShelfBooks(books, shelf)}
+                  shelves={shelves}
+                  onMoveBook={this.moveBook}/>
+              )}
             </div>
             <div className="open-search">
               <Link to="/search">Add a book</Link>
