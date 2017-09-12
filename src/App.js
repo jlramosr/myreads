@@ -29,7 +29,8 @@ class BooksApp extends Component {
     const bookId = book.id;
     BooksAPI.update(book, newShelf).then(shelvesBooks => {
       let { books } = this.state;
-      books[bookId].shelf = newShelf;
+      book.shelf = newShelf;
+      books[bookId] = book;
       loading = false;
       this.setState({books, loading});
     })
@@ -93,6 +94,7 @@ class BooksApp extends Component {
           <Route path="/search" render={ _ => (
             <SearchBooks
               shelves={shelves}
+              catalogedBooks={books}
               onMoveBook={this.moveBook}
               setSearching={this.searchingChanged}/>
           )}/>

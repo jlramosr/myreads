@@ -54,6 +54,7 @@ h2 {
 }
 
 .app-title {
+  white-space: nowrap; 
   padding: 12px 0;
   text-align: left;
 }
