@@ -1,0 +1,48 @@
+.search-books {
+  position: relative;
+  z-index: 0;
+}
+
+.search-books-bar {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  display: flex;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 0 6px rgba(0,0,0,0.23);
+}
+
+.search-icon {
+  width: 32px;
+  height: 32px;
+  margin: 10px 0 0 22px;
+  background-image: url('./icons/search.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  float: left;
+  font-size: 0;
+}
+
+.search-books-input-wrapper {
+  flex: 1;
+  background: #e9e;
+}
+
+.search-books-bar input {
+  width: 100%;
+  padding: 15px 12px;
+  font-size: 1.25em;
+  border: none;
+  outline: none;
+}
+
+.search-books-results {
+  padding: 80px 10px 20px;
+}
+
+.search-books-error {
+  padding: 80px 30px 20px;
+  color: #B71C1C;
+}

@@ -37,7 +37,7 @@ class Book extends Component {
                   hidden={book.shelf===option}>{nameToTitle(option)}
                 </option>
               ))}
-              <option value="none">
+              <option value="none" hidden={!book.shelf}>
                 None
               </option>
             </select>
@@ -46,7 +46,7 @@ class Book extends Component {
         <div className="book-title">
           {book.title}
         </div>
-        {book.authors.map(author => (
+        {book.authors && book.authors.map(author => (
           <div key={author} className="book-authors">
             {author}
           </div>

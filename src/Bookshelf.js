@@ -2,18 +2,18 @@ import React, { Component } from 'react'
 import PropTypes from "prop-types"
 import Book from './Book'
 import sortBy from 'sort-by'
-import './Shelf.css'
+import './Bookshelf.css'
 
-class Shelf extends Component {
+class Bookshelf extends Component {
 
   static propTypes = {
-    name: PropTypes.string.isRequired,
     books: PropTypes.array.isRequired,
     shelves: PropTypes.array.isRequired,
     onMoveBook: PropTypes.func.isRequired
   }
 
   nameToTitle(name) {
+    if (!name) return '';
     let title = name.replace(/([A-Z])/g, ' $1').trim(); //space before capital letter
     title = title.charAt(0).toUpperCase() + title.slice(1); //capitalize first letter
     return title;
@@ -25,9 +25,10 @@ class Shelf extends Component {
 
     return (
       <div className="bookshelf">
-        <h2 className="bookshelf-title">
+        <h2 className="bookshelf-title" hidden={!name}>
           <div className="bookshelf-icon"></div>
-          {this.nameToTitle(name)}</h2>
+          {this.nameToTitle(name)}
+        </h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
             {ordererBooks.map(book => (
@@ -47,4 +48,4 @@ class Shelf extends Component {
 
 }
 
-export default Shelf;
+export default Bookshelf;
