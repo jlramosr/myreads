@@ -18,13 +18,14 @@ class Book extends Component {
       <div className="book">
         <div className="book-top">
           <div className="book-cover" style={
-            { width: 128,
-              height: 193,
-              backgroundImage: `url("${book.imageLinks.thumbnail}")`
-            }
+            book.imageLinks && book.imageLinks.thumbnail ?
+              { backgroundImage: `url("${book.imageLinks.thumbnail}")` } :
+              { backgroundSize: 100 }
           }></div>
           <div className="book-shelf-changer">
-            <select value="moveTo" onChange={event => 
+            <select
+              value={book.shelf || 'moveTo'}
+              onChange={event => 
               onMoveBook(book, event.target.value)
             }>
               <option value="moveTo" disabled>
@@ -34,10 +35,13 @@ class Book extends Component {
                 <option 
                   key={option} 
                   value={option} 
-                  hidden={book.shelf===option}>{nameToTitle(option)}
+                  className={
+                    book.shelf===option ? 'book-shelf-highlited' : ''
+                  }
+                >{nameToTitle(option)}
                 </option>
               ))}
-              <option value="none" hidden={!book.shelf}>
+              <option value="none" hidden={!book.shelf || book.shelf === 'none'}>
                 None
               </option>
             </select>

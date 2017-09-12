@@ -26,14 +26,20 @@ class SearchBooks extends Component {
   }
 
   _updateQuery = query => {
-    const { setSearching } = this.props;
+    const { catalogedBooks, setSearching } = this.props;
     this.setState( {query} );
     setSearching(true);
     if (query) {
       BooksAPI.search(query)
         .then(results => {
+          const books = results.error ? [] : results;
+          for (let book of books) {
+            if (book.id in catalogedBooks) {
+              book.shelf = catalogedBooks[book.id].shelf;
+            } 
+          }
           this.setState({
-            books: results.error ? [] : results,
+            books,
             errorMessage: this._handleErrorMessage(results.error)
           });
           setSearching(false);
