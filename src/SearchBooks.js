@@ -1,15 +1,22 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Bookshelf from './Bookshelf'
 import * as BooksAPI from './BooksAPI'
 import './SearchBooks.css'
 
 class SearchBooks extends Component {
+
+  static propTypes = {
+    catalogedBooks: PropTypes.object.isRequired,
+    shelves: PropTypes.array.isRequired,
+    onMoveBook: PropTypes.func.isRequired,
+    setLoading: PropTypes.func.isRequired
+  }
   
   state = {
     query: '',
     books: [],
-    errorMessage: '',
-    searching: false,
+    errorMessage: ''
   }
 
   _focusInput() {
@@ -26,9 +33,9 @@ class SearchBooks extends Component {
   }
 
   _updateQuery = query => {
-    const { catalogedBooks, setSearching } = this.props;
+    const { catalogedBooks, setLoading } = this.props;
     this.setState( {query} );
-    setSearching(true);
+    setLoading(true);
     if (query) {
       BooksAPI.search(query)
         .then(results => {
@@ -42,11 +49,11 @@ class SearchBooks extends Component {
             books,
             errorMessage: this._handleErrorMessage(results.error)
           });
-          setSearching(false);
+          setLoading(false);
         })
     } else {
       this.setState( {books: [], errorMessage: ''} );
-      setSearching(false);
+      setLoading(false);
     }
   }
 
@@ -93,45 +100,3 @@ class SearchBooks extends Component {
 }
 
 export default SearchBooks;
-
-/*BooksAPI from './BooksAPI';
-import Book from './Book'
-import {Link} from 'react-router-dom';
-export default class SearchPage extends Component {
- state = {
-   query: '',
-   books:[]
- }
-
- updateQuery =(query) => {
-   this.setState({
-     query
-   })
-
-    BooksAPI.search(query,20).then(results => {
-       if(results.length > 0) {
-         this.setState({
-           books:results
-         })
-       } else {
-         this.setState({
-           books:[]
-         })
-       }
-     })
-     .catch(e=> console.log(e));
- }
-
- clearQuery = () => {
-   this.setState({
-     query:'',
-   })
- }
-   getShelf = (bookid) =>{
-     var toReturn = 'none';
-     this.props.books.forEach((book)  => {
-       if(book.id === bookid)
-        toReturn =  book.shelf;
-     });
-     return toReturn;
-   }*/

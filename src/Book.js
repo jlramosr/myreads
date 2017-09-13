@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from "prop-types"
+import { shelfKeyToTitle } from './Common'
 import './Book.css'
 
 class Book extends Component {
@@ -7,21 +9,23 @@ class Book extends Component {
   static propTypes = {
     book: PropTypes.object.isRequired,
     shelvesToMove: PropTypes.array.isRequired,
-    nameToTitle: PropTypes.func.isRequired,
     onMoveBook: PropTypes.func.isRequired
   }
 
   render() {
-    const { book, shelvesToMove, nameToTitle, onMoveBook } = this.props;
+    const { book, shelvesToMove, onMoveBook } = this.props;
 
     return (
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={
-            book.imageLinks && book.imageLinks.thumbnail ?
-              { backgroundImage: `url("${book.imageLinks.thumbnail}")` } :
-              { backgroundSize: 100 }
-          }></div>
+          <Link to={`/book/${book.id}`}>
+            <div className="book-cover" style={
+              book.imageLinks && book.imageLinks.thumbnail ?
+                { backgroundImage: `url("${book.imageLinks.thumbnail}")` } :
+                { backgroundSize: 100 }
+            }></div>
+          </Link>
+
           <div className="book-shelf-changer">
             <select
               value={book.shelf || 'moveTo'}
@@ -38,7 +42,7 @@ class Book extends Component {
                   className={
                     book.shelf===option ? 'book-shelf-highlited' : ''
                   }
-                >{nameToTitle(option)}
+                >{shelfKeyToTitle(option)}
                 </option>
               ))}
               <option value="none" hidden={!book.shelf || book.shelf === 'none'}>
