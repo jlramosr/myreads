@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Route, Link } from 'react-router-dom'
 import Bookshelf from './Bookshelf'
 import SearchBooks from './SearchBooks'
+import BookDetail from './BookDetail'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import { ClipLoader } from 'react-spinners'
@@ -11,16 +12,25 @@ class BooksApp extends Component {
   state = {
     books: {}, // {bookId1: book1, bookId2: book2, ...}
     shelves: ['currentlyReading', 'wantToRead', 'read'],
+    title: 'MyReads',
     loading: true
   }
 
   moveBook = this.moveBook.bind(this);
-  searchingChanged = this.searchingChanged.bind(this);
+  setLoading = this.setLoading.bind(this);
+  setTitle = this.setTitle.bind(this);
 
   _getShelfBooks(books, shelf) {
     return Object.values(books).filter(book => (
       book.shelf === shelf
     ))
+  }
+
+  shelfKeyToTitle(name) {
+    if (!name) return '';
+    let title = name.replace(/([A-Z])/g, ' $1').trim(); //space before capital letter
+    title = title.charAt(0).toUpperCase() + title.slice(1); //capitalize first letter
+    return title;
   }
 
   moveBook(book, newShelf) {
@@ -36,8 +46,12 @@ class BooksApp extends Component {
     })
   }
 
-  searchingChanged(searching) {
-    this.setState({loading: searching});
+  setTitle(title) {
+    this.setState({title: title});
+  }
+
+  setLoading(loading) {
+    this.setState({loading});
   }
 
   componentDidMount() {
@@ -64,10 +78,10 @@ class BooksApp extends Component {
             <Route path="/" exact render={ _ => (
               <div className="app-title-icon app-title-icon-udacity"></div>
             )}/>
-            <Route path="/:page" exact render={ _ => (
+            <Route path="/:page" render={ _ => (
               <Link to="/" className="app-title-icon app-title-icon-back">Close</Link>
             )}/>
-            <h1>MyReads</h1>
+            <h1>{this.state.title}</h1>
           </div>
         </div>
 
@@ -82,7 +96,8 @@ class BooksApp extends Component {
                     name={shelf}
                     books={this._getShelfBooks(books, shelf)}
                     shelves={shelves}
-                    onMoveBook={this.moveBook}/>
+                    onMoveBook={this.moveBook}
+                    shelfKeyToTitle={this.shelfKeyToTitle}/>
                 )}
               </div>
               <div className="open-search">
@@ -96,7 +111,17 @@ class BooksApp extends Component {
               shelves={shelves}
               catalogedBooks={books}
               onMoveBook={this.moveBook}
-              setSearching={this.searchingChanged}/>
+              setLoading={this.setLoading}/>
+          )}/>
+
+          <Route path="/book/:bookId" render={ props => (
+            <BookDetail
+              bookId={props.match.params.bookId}
+              shelvesToMove={shelves}
+              onMoveBook={this.moveBook}
+              shelfKeyToTitle={this.shelfKeyToTitle}
+              setTitle={this.setTitle}
+              setLoading={this.setLoading}/>
           )}/>
 
         </div>

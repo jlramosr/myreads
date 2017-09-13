@@ -1,0 +1,60 @@
+.book-content {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 600px) {
+  .book-content {
+    flex-direction: row;
+  }
+}
+
+.image {
+  display: inline-block;
+  margin: 8px 24px;
+  text-align: center;
+}
+
+.info {
+  display: inline-block;
+  margin: 8px 16px;
+  text-align: center;
+}
+
+.cover {
+  margin: 32px auto;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  background: #eee;
+  background-image: url('./icons/udacity.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.info__main {
+  font-size: 18px;
+}
+
+.title {
+  font-weight: 800;
+}
+
+.info__secondary {
+  font-size: 14px;
+  color: #999;
+  list-style: none;
+  padding: 0;
+}
+
+.info__shelf {
+  font-size: 14px;
+  color: #999;
+}
+
+.shelf--highlited {
+  color: #00695C;
+  font-weight: 800;
+}
+
