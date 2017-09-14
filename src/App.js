@@ -37,13 +37,15 @@ class BooksApp extends Component {
     let loading = true;
     this.setState({loading});
     const bookId = book.id;
-    BooksAPI.update(book, newShelf).then(shelvesBooks => {
-      let { books } = this.state;
-      book.shelf = newShelf;
-      books[bookId] = book;
-      loading = false;
-      this.setState({books, loading});
-    })
+    if (book.shelf !== newShelf) {
+      BooksAPI.update(book, newShelf).then(shelvesBooks => {
+        let { books } = this.state;
+        book.shelf = newShelf;
+        books[bookId] = book;
+        loading = false;
+        this.setState({books, loading});
+      })
+    }
   }
 
   setTitle(title) {
